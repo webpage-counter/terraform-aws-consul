@@ -87,6 +87,7 @@ resource "aws_instance" "consul_servers" {
   associate_public_ip_address = false  
   count                       = var.server_count
   user_data                   = data.template_file.var.rendered
+  depends_on                  = [data.terraform_remote_state.nw]
 
   tags = {
     Name     = "consul-server${count.index + 1}"
