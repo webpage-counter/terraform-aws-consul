@@ -80,11 +80,11 @@ data "template_file" "var" {
 resource "aws_instance" "consul_servers" {
   ami                         = var.ami
   instance_type               = var.instance_type
-  subnet_id                   = data.terraform_remote_state.nw.outputs.public_subnets[0]
+  subnet_id                   = data.terraform_remote_state.nw.outputs.private_subnets[0]
   vpc_security_group_ids      = ["${data.terraform_remote_state.nw.outputs.pubic_sec_group}"]
   iam_instance_profile        = aws_iam_instance_profile.consul.id
   private_ip                  = "${var.IP["server"]}${count.index + 1}"
-  associate_public_ip_address = false  
+  associate_public_ip_address = true  
   count                       = var.server_count
   user_data                   = data.template_file.var.rendered
   depends_on                  = [data.terraform_remote_state.nw]
