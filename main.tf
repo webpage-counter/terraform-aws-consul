@@ -84,6 +84,7 @@ resource "aws_instance" "consul_servers" {
   vpc_security_group_ids      = ["${data.terraform_remote_state.nw.outputs.pubic_sec_group}"]
   iam_instance_profile        = aws_iam_instance_profile.consul.id
   private_ip                  = "${var.IP["server"]}${count.index + 1}"
+  key_name                    = "denislav_key_pair"
   associate_public_ip_address = true  
   count                       = var.server_count
   user_data                   = data.template_file.var.rendered
