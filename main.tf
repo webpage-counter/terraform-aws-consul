@@ -60,12 +60,6 @@ resource "aws_iam_instance_profile" "consul" {
   role        = aws_iam_role.consul.name
 }
 
-# Resource needed in order to be able to SSH and provision the EC2 instances
-resource "aws_key_pair" "key" {
-  key_name   = "key_${var.dcname}"
-  public_key = file("~/.ssh/id_rsa.pub")
-}
-
 # Data source that is needed in order to dinamicly publish values of variables into the script that is creating Consul configuration files and starting it.
 
 data "template_file" "var" {
@@ -87,7 +81,6 @@ resource "aws_instance" "consul_servers" {
   ami                         = var.ami
   instance_type               = var.instance_type
   subnet_id                   = data.terraform_remote_state.nw.outputs.public_subnets[0]
-  key_name                    = aws_key_pair.key.id
   vpc_security_group_ids      = ["${data.terraform_remote_state.nw.outputs.pubic_sec_group}"]
   iam_instance_profile        = aws_iam_instance_profile.consul.id
   private_ip                  = "${var.IP["server"]}${count.index + 1}"
@@ -139,7 +132,4 @@ output "iam_instance_profile" {
   value = aws_iam_instance_profile.consul.id
 }
 
-output "key_pair" {
-  value = aws_key_pair.key.id
-}
 
