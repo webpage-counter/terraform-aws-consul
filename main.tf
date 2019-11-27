@@ -85,7 +85,7 @@ resource "aws_instance" "consul_servers" {
   iam_instance_profile        = aws_iam_instance_profile.consul.id
   private_ip                  = "${var.IP["server"]}${count.index + 1}"
   key_name                    = "denislav_key_pair"
-  associate_public_ip_address = true  
+  associate_public_ip_address = false  
   count                       = var.server_count
   user_data                   = data.template_file.var.rendered
   depends_on                  = [data.terraform_remote_state.nw]
