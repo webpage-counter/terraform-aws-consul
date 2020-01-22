@@ -81,7 +81,7 @@ resource "aws_instance" "consul_servers" {
   ami                         = var.ami
   instance_type               = var.instance_type
   subnet_id                   = data.terraform_remote_state.nw.outputs.private_subnets[0]
-  vpc_security_group_ids      = ["${data.terraform_remote_state.nw.outputs.pubic_sec_group}"]
+  vpc_security_group_ids      = data.terraform_remote_state.nw.outputs.pubic_sec_group
   iam_instance_profile        = aws_iam_instance_profile.consul.id
   private_ip                  = "${var.IP["server"]}${count.index + 1}"
   key_name                    = "denislav_key_pair"
