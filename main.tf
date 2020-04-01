@@ -105,9 +105,6 @@ output "ami" {
   value = var.ami
 }
 
-output "instance_type" {
-  value = aws_instance.consul_servers[0].instance_type
-}
 
 output "security_group_id" {
   value = aws_instance.consul_servers[0].vpc_security_group_ids
@@ -125,13 +122,6 @@ output "subnet_id" {
   value = aws_instance.consul_servers[0].subnet_id
 }
 
-output "data_rendered" {
-  value      = data.template_file.var.rendered
-  depends_on = [data.template_file.var]
-}
-
 output "iam_instance_profile" {
   value = aws_iam_instance_profile.consul.id
 }
-
-
